@@ -1,0 +1,1099 @@
+main {
+      padding: 20px;
+    }
+      .description {
+        background-color: #1C1C1C;
+        padding-bottom: 20px;
+        text-align: right;
+      }
+/* CSS styles */
+@font-face {
+    font-family: 'mem'; /* اسم الخط الذي ستستخدمه في CSS */
+    src: url('mem.ttf') format('truetype'); /* مسار ملف الخط */
+    /* يمكنك أيضًا تحديد الأوزان والنمط إذا كان هناك أكثر من نمط */
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  
+    background-color: #0A0A0A;
+
+  overflow-x: hidden;
+}
+
+header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand .fa-github {
+  font-size: 35px;
+}
+
+.brand h1 {
+  margin-left: 10px;
+}
+
+#menuIcon {
+  display: none;
+}
+
+#closeIcon {
+  display: none;
+}
+
+.navbar {
+  position: fixed;
+  top: 70px;
+  right: -70%; /* تفتح من اليمين بنسبة 70% */
+  width: 70%;
+  height: 100%;
+  background: rgb(8, 9, 19);
+  overflow-y: auto;
+  z-index: 999;
+  transition: right 0.3s ease; /* إضافة انتقال للحركة من اليمين */
+}
+
+.navbar.active {
+  right: 0; /* إظهار الـ nav عند الضغط على زر الفتح */
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 20px;
+}
+
+.navbar ul li {
+  margin-bottom: 10px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .tele-image {
+    padding-right: 40px;
+  }
+  .hamburger {
+  
+  margin-right: 30px;
+  cursor: pointer;
+  
+}
+
+
+
+.hamburger input {
+  
+  display: none;
+}
+
+.hamburger svg {
+  
+  /* The size of the SVG defines the overall size */
+  height: 3em;
+  /* Define the transition for transforming the SVG */
+  transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.line {
+  
+  fill: none;
+  stroke: white;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  /* Define the transition for transforming the Stroke */
+  transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.day-mode .line {
+  stroke: black;
+}
+
+.line-top-bottom {
+  
+  stroke-dasharray: 12 63;
+}
+
+.hamburger input:checked + svg {
+  transform: rotate(-45deg);
+}
+
+.hamburger input:checked + svg .line-top-bottom {
+  stroke-dasharray: 20 300;
+  stroke-dashoffset: -32.42;
+}
+
+  .navbar {
+    
+    position: fixed;
+    width: 0;
+    right: 0; /* تأكد من إخفاء الـ nav في الهواتف */
+  }
+  .navbar.active {
+    width: 70%;
+  }
+    .navbar ul {
+    text-align: right;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(8, 9, 19);
+  }
+  .navbar ul li {
+    display: block;
+    margin-top: 11px;
+    width: 85%;
+    height: 40px;
+    text-align: right;
+    position: relative;
+    top: 8px;
+
+  }
+
+  #elebar {
+     display: none;
+     direction: rtl;
+    text-align: right; /* محاذاة النص إلى اليمين */
+    font-family: 'mem', Arial, sans-serif;
+    white-space: nowrap; /* عدم التفاف النص */
+    overflow: visible; /* السماح بظهور النص بالكامل */
+    font-size: 16px; /* ضبط حجم الخط */
+    width: auto; /* عرض تلقائي ليناسب النص */
+    position: fixed;
+    right: 0;
+  }
+/* إخفاء الروابط بشكل افتراضي */
+
+
+/* إظهار الروابط عندما تكون القائمة نشطة */
+.navbar.active #elebar {
+    display: block;
+    position: fixed;
+  
+    right: 10px; /* تعديل الموضع الأفقي حسب الحاجة */
+}
+}
+
+.day-mode #menuIcon {
+  color: black;
+}
+.day-mode #closeIcon {
+  color: black;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5em;
+}
+
+.shop-items {
+    display: flex;
+    flex-wrap: nowrap; /* لمنع الانقسام */
+    overflow-x: auto; /* لتمكين التمرير الأفقي */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    margin-bottom: 20px;
+    justify-content: flex-start; /* تحديد البداية لمحاذاة العناصر */
+    flex-direction: row-reverse; /* تغيير اتجاه العرض إلى اليمين */
+}
+
+.shop-item {
+    background-color: white;
+    border-radius: 7px;
+    flex: 0 0 auto; /* منع تمدد العناصر */
+    scroll-snap-align: start;
+    margin-left: 20px; /* تباعد بين العناصر */
+    padding-bottom: 10px;
+    width: 250px;
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease-in-out;
+}
+
+.shop-item:last-child {
+    margin-left: 0; /* إزالة التباعد بعد العنصر الأخير */
+}
+
+
+
+.shop-item.selected {
+    transform: scale(1.1);
+    opacity: 1;
+    z-index: 1;
+}
+
+.shop-item-title {
+    width: 100%;
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+    color: #333;
+    direction: rtl; /* توجيه النص من اليمين إلى اليسار */
+}
+
+.shop-item-tslem {
+  display: block; /* تغيير من inline-block إلى block */
+  font-weight: bold;
+  font-size: 13px;
+  color: #333;
+  padding-right: 5px;
+  direction: rtl;
+  margin-top: 5px; /* تباعد بين العناصر إذا لزم الأمر */
+}
+
+.shop-item-image {
+    display: block;
+    width: 100%; /* Ensure images take full width of their container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px;
+}
+
+.shop-item-details {
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.shop-item-price {
+    color: #333;
+    flex-grow: 1;
+}
+
+.btn {
+    text-align: center;
+    padding: .67em .67em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: .3em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.store-image {
+    text-align: center; /* Center align the image */
+    margin-bottom: 20px; /* Add space below the image */
+}
+
+.store-image img {
+  
+    max-width: 100%; /* Ensure the image scales to fit its container */
+    height: auto; /* Maintain aspect ratio */
+}
+.image-containr {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 30px; /* Adjust height as needed */
+}
+
+.tele-image {
+
+  width: 150px;
+  max-width: 150%; /* Ensure image doesn't exceed container width */
+  max-height: 150%; /* Ensure image doesn't exceed container height */
+  height: 150px; /* Maintain aspect ratio */
+  
+  display: block; /* Remove any potential spacing */
+  margin: 0; /* Center the image horizontally */
+
+}
+.containerr {
+  margin-left: -10px;
+  margin-right: 35px;
+
+  order: -1;
+}
+.magor-logo {
+  position: relative;
+  height: auto
+  display: none;
+  padding-top: -988px;
+      width: 100%; /* العرض المراد بالنسبة المئوية من عرض الهاتف */
+    max-width: 150%; /* عرض أقصى للصورة */
+    margin: 0 auto; /* لتوسيط الصورة أفقيًا */
+    overflow: hidden; /* لإخفاء أي محتوى يتجاوز حدود الصورة */
+     /* جعل الصورة مقوسة */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* ظل للصورة */
+}
+h2.text {
+  font-family: 'mem', Arial, sans-serif;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #01D261;
+}
+
+h2.text::before,
+h2.text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background-color: white;
+}
+
+h2.text::before {
+    right: 95%;
+    margin-right: -20%; /* تعديل المسافة بين النص والخط الأفقي على اليمين */
+    
+}
+
+h2.text::after {
+    left: 95%;
+    margin-left: -20%; /* تعديل المسافة بين النص والخط الأفقي على اليسار */
+}
+/* تحديد مظهر المربعات */
+/* تحديد مظهر المربعات */
+/* إعداد حاوية الصورة */
+.magnor-image-container {
+  position: relative;
+  
+
+  width: 100%
+  position: relative; /* لجعل المربعات تتداخل مع الصورة */
+  display: inline-block; /* للحفاظ على حجم الصورة فقط */
+}
+
+/* إعداد حاوية المربعات */
+.floating-box-container {
+  position: absolute;
+  bottom: -25px; /* لتحريك المربعات للأسفل قليلاً */
+  left: 55%;
+  transform: translateX(-55%); /* لتوسيط الحاوية أفقياً */
+  display: flex;
+  gap: 18px; /* المسافة بين المربعات */
+}
+
+
+.floating-box {
+  width: 80px;
+  height: 90px;
+  
+  margin: 0 3px;
+  position: relative; /* يسمح لنا بوضع النص أسفل الصورة */
+  border-radius: 7px; /* تقوس الزاوية */
+  overflow: hidden; /* لإخفاء أي محتوى يتجاوز حدود المربع */
+  display: flex; /* استخدام Flexbox لمحاذاة العناصر */
+  justify-content: center; /* توسيط أفقي للعنصر داخل المربع */
+  align-items: center; /* توسيط رأسي للعنصر داخل المربع */
+}
+
+.floating-box img {
+  max-height: 60%; /* حفظ نسبة العرض إلى الارتفاع */
+  display: block; /* عرض الصورة بشكل كتلة */
+  margin: auto; /* توسيط الصورة داخل المربع */
+}
+
+.floating-box span {
+  font-family: 'mem', Arial, sans-serif;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: black;
+  font-size: 10px;
+  padding: 2px 0;
+  border-bottom-left-radius: 4px; /* تقوس الزاوية للحواف */
+  border-bottom-right-radius: 4px; /* تقوس الزاوية للحواف */
+}
+/* حاوية الصورة لجعلها نسبية */
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+.top-right-rectangle {
+  font-family: 'mem', Arial, sans-serif;
+  position: absolute;
+  border-bottom-left-radius: 9px;
+  border-top-right-radius: 5.9px;
+  top: 0;
+  right: 0;
+  height: 15px;
+  padding: 4px; /* تغيير حجم الحشو */
+  margin: 0; /* تغيير حجم الهوامش */
+  font-size: 12px; /* الطول 10px * 10 */
+  background-color: #01D261; /* اللون الخلفي للمستطيل */
+  color: white; /* لون النص */
+  
+  align-items: center;
+  justify-content: center;
+   /* حجم النص */
+  font-weight: bold;
+  direction: rtl;
+  text-align: center;
+  z-index: 17;
+}
+/* المستطيل في الزاوية العلوية اليمنى */
+.top-right-rectangle-magor {
+  font-family: 'mem', Arial, sans-serif;
+  position: absolute;
+  border-bottom-left-radius: 9px;
+  top: 6.8px;
+  right: 0;
+  height: 15px;
+  padding: 4px; 
+  margin: 3px;  
+  font-size: 12px; /* الطول 10px * 10 */
+  background-color: #01D261; /* اللون الخلفي للمستطيل */
+  color: white;
+  
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  direction: rtl;
+  text-align: center;
+  z-index: 17;
+}
+
+@media (min-width: 769px) {
+  h2.text {
+  font-family: 'mem', Arial, sans-serif;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #01D261;
+}
+
+h2.text::before,
+h2.text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: white;
+}
+
+h2.text::before {
+    right: 95%;
+    margin-right: -33%; /* تعديل المسافة بين النص والخط الأفقي على اليمين */
+    
+}
+
+h2.text::after {
+    left: 95%;
+    margin-left: -33%; /* تعديل المسافة بين النص والخط الأفقي على اليسار */
+}
+    .day-mode .navbar ul li a {
+    color: black;
+  }
+  .navbar {
+            position: static;
+            width: 100%;
+            background: none;
+            overflow-x: auto; /* لتمكين التمرير الأفقي */
+            white-space: nowrap; /* منع التفاف النص */
+            display: flex;
+            align-items: center; /* لمحاذاة الروابط عموديًا في الوسط */
+        }
+        .navbar ul {
+            display: flex;
+            flex-direction: row-reverse; /* لجعل الترتيب من اليمين إلى اليسار */
+            padding: 0;
+            margin: 0;
+            list-style: none; /* إزالة نقاط القائمة */
+            gap: 18px; /* مسافة بين العناصر */
+        }
+        .navbar ul li {
+            display: inline-block;
+        }
+        .navbar ul li a {
+            font-size: 18px;
+            color: white;
+            text-decoration: none; /* إزالة الخط السفلي */
+        }
+
+        /* ترتيب العناصر باستخدام خاصية order */
+        .navbar ul li:nth-child(1) { order: 1; }
+        .navbar ul li:nth-child(2) { order: 2; }
+        .navbar ul li:nth-child(3) { order: 3; }
+        .navbar ul li:nth-child(4) { order: 4; }
+        .navbar ul li:nth-child(5) { order: 5; }
+        .navbar ul li:nth-child(6) { order: 6; }
+        .navbar ul li:nth-child(7) { order: 7; }
+        .navbar ul li:nth-child(8) { order: 8; }
+        .navbar ul li:nth-child(9) { order: 9; }
+        .navbar ul li:nth-child(10) { order: 10; }
+
+        #elebar {
+            direction: rtl;
+            text-align: right; /* محاذاة النص إلى اليمين */
+            font-family: 'mem', Arial, sans-serif;
+            white-space: nowrap; /* عدم التفاف النص */
+            overflow: visible; /* السماح بظهور النص بالكامل */
+            font-size: 14px; /* ضبط حجم الخط */
+            width: auto; /* عرض تلقائي ليناسب النص */
+        }
+        .hamburger {
+          display: none;
+        }
+  .tele-image {
+    margin-right: 110px;
+    
+  }
+  .navbar ul {
+    display: flex;
+    flex-direction: row-reverse; /* توجيه العناصر من اليمين إلى اليسار */
+    justify-content: flex-end; /* بداية عرض العناصر من اليمين للشاشات الكبيرة */
+    padding: 20px;
+}
+
+.navbar ul li {
+    margin-left: 10px; /* تباعد بين العناصر */
+
+
+}
+
+/* تعيين لون خلفية أخضر للزر المفعل */
+   .navbar a.active {
+     background-color: #01D261;
+     color: white;
+     border-radius: 5px;
+   }
+   
+}
+.shop-item {
+  position: relative;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.shop-item.blur {
+  filter: blur(5px);
+}
+
+.shop-item hover {
+  transform: scale(1.2);
+  z-index: 1;
+}
+
+.toggle {
+  
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  
+  line-height: 1;
+  order: -1;
+}
+
+.input {
+  display: none;
+}
+
+.icon {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  transition: transform 500ms;
+}
+
+.icon--moon {
+  transition-delay: 200ms;
+}
+
+.icon--sun {
+  transform: scale(0);
+}
+
+#switch:checked + .icon--moon {
+  transform: rotate(360deg) scale(0);
+}
+
+#switch:checked ~ .icon--sun {
+  transition-delay: 200ms;
+  transform: scale(1) rotate(360deg);
+}
+
+.w-8 {
+  width: 2rem /* 32px */;
+}
+/* الوضع النهاري */
+.day-mode {
+   background-color: white; /* خلفية الموقع */
+}
+
+.day-mode header {
+   background-color: white; /* لون الـ header */
+   color: black; /* لون النص داخل الـ header */
+}
+
+
+.day-mode .shop-item {
+   border-color: black; /* تغيير لون إطار العنصر */
+   background-color: black; /* تغيير خلفية العنصر */
+   color: white; /* تغيير لون النص داخل العنصر */
+}
+
+.day-mode .shop-item-title, .day-mode .shop-item-tslem {
+   color: white; /* تغيير لون النص داخل العنصر */
+}
+
+.day-mode h2.text::before, .day-mode h2.text::after {
+   background-color: black; /* تغيير لون الخط الأفقي */
+}
+
+/* الوضع الليلي (الوضع الافتراضي) */
+.night-mode {
+   background-color: #0A0A0A; /* الخلفية الليلة */
+}
+
+.night-mode header {
+   background-color: black; /* لون الـ header الليلي */
+   color: white; /* لون النص داخل الـ header */
+}
+
+.night-mode .shop-item {
+   border-color: #ddd; /* إعادة لون الإطار الافتراضي */
+   background-color: white; /* إعادة لون الخلفية الافتراضي */
+   color: #333; /* إعادة لون النص الافتراضي */
+}
+
+.night-mode .shop-item-title, .night-mode .shop-item-tslem {
+   color: #333; /* إعادة لون النص الافتراضي */
+}
+
+.night-mode h2.text::before, .night-mode h2.text::after {
+   background-color: white; /* إعادة لون الخط الأفقي */
+}
+  .booton-shop-rectangle {
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    align-items: center;
+    width: 85%;
+    border-radius: 4px;
+    text-decoration: none; /* لإزالة تأثير النقر */
+    transition: background-color 0.3s ease;
+    display: inline-block; /* لضمان عرض وسم الارتباط بشكل صحيح */
+    margin-right: 2%; /* تعديل المسافة بين المستطيل والسعر حسب الحاجة */
+  }
+
+  .booton-shop-rectangle:hover {
+    background-color: darkred;
+  }
+  
+  .description {
+    font-family: 'mem', Arial, sans-serif;
+    
+  }
+  
+.btn-show-more {
+
+  color: red;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  /* يمكنك أيضًا إضافة أنماط أخرى حسب الحاجة */
+}
+.p-text-more {
+  color: #C2C2C2;
+  font-size: 14px;
+  padding-right: 3px;
+  text-align: right;
+  direction: rtl;
+}
+.doted {
+  text-align: right;
+  direction: rtl;
+  color: #C2C2C2;
+}
+.day-mode .doted {
+  color: #C2C2C2;
+}
+.hidden {
+  display: none;
+}
+.radio-inputs {
+  font-family: 'mem', Arial, sans-serif;
+  text-align: right;
+  justify-content: right;
+  position: relative;
+  display: flex;
+  border-radius: 0.5rem;
+  background-color: #70c489;
+  
+  font-size: 14px;
+  width: 90%;
+  padding: 1rem 1rem 0 1.5rem;
+}
+
+.radio-inputs .radio input {
+  display: none;
+}
+@media screen and (min-width: 769px) {
+  .radio-inputs {
+    width: 95%;
+  }
+  
+}
+
+.radio-inputs .radio .name {
+  display: flex;
+  cursor: pointer;
+  right: 3px;
+  text-align: right;
+  justify-content: right;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  color: white;
+  transition: all 0.15s ease-in-out;
+  position: relative;
+}
+
+.radio-inputs .radio input:checked + .name {
+  background-color: #0A0A0A;
+  font-weight: 600;
+}
+.radio-inputs .radio input + .name:hover {
+  color: #fff;
+}
+.radio-inputs .radio input:checked + .name:hover {
+  color: white;
+}
+
+.radio-inputs .radio input:checked + .name::after,
+.radio-inputs .radio input:checked + .name::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #70c489;
+  bottom: 0;
+}
+
+.radio-inputs .radio input:checked + .name::after {
+  right: -10px;
+  border-bottom-left-radius: 300px;
+  box-shadow: -3px 3px 0px 3px #0A0A0A;
+}
+.radio-inputs .radio input:checked + .name::before {
+  left: -10px;
+  border-bottom-right-radius: 300px;
+  box-shadow: 3px 3px 0px 3px #0A0A0A;
+}
+
+
+.day-mode .radio-inputs .radio input:checked + .name::before {
+  box-shadow: 3px 3px 0px 3px white;
+}
+.day-mode .radio-inputs .radio input:checked+.name::after {
+  box-shadow: -3px 3px 0px 3px white;
+}
+.day-mode .radio-inputs .radio input:checked + .name {
+  background-color: white;
+}
+.day-mode .radio-inputs .radio input:checked + .name:hover {
+  color: black;
+}
+.day-mode .radio-inputs .radio .name {
+  color: black;
+}
+ #content {
+    font-family: 'mem', Arial, sans-serif;
+    color: white; 
+    font-size: 16px; 
+    line-height: 1.5; 
+    text-align: right;
+
+    margin-top: 10px; 
+  margin-right: 5px;
+    
+  }
+  .day-mode #content {
+    color: black;
+  }
+  @import url(//fonts.googleapis.com/css?family=Lato:300:400);
+
+.flex {
+  /*Flexbox for containers*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.waves {
+  background-color: black;
+  color: red;
+  position: relative;
+  width: 100%;
+  height: 15vh;
+  margin-bottom: -7px;
+  /*Fix for safari gap*/
+  min-height: 100px;
+  max-height: 150px;
+}
+.day-mode .waves {
+  background-color: white;
+}
+.content {
+  position: relative;
+  height: 20vh;
+  text-align: center;
+  background-color: #F5F5F5;
+}
+.day-mode .content {
+  background-color: black;
+  
+}
+/* Animation */
+
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+
+.parallax > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+
+.parallax > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+
+.parallax > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+
+.parallax > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+
+@keyframes move-forever {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
+/* /* Shrinking for mobile */
+@media (max-width: 768px) {
+  .waves {
+    height: 40px;
+    min-height: 40px;
+  }
+.day-mode .content {
+  background-color: black;
+
+}
+  .content {
+    height: 15vh;
+    
+  }
+
+  
+}
+
+.footer-content {
+
+  background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.day-mode .footer-content {
+  background-color: black;
+}
+.wave1 {
+  fill: rgba(255, 255, 255, 0.7);
+}
+
+.wave2 {
+  fill: rgba(255, 255, 255, 0.5);
+}
+
+.wave3 {
+  fill: rgba(255, 255, 255, 0.3);
+}
+
+.wave4 {
+  fill: #F5F5F5;
+}
+.day-mode .wave1 {
+  fill: rgba(0, 0, 0, 0.7);
+}
+.day-mode .wave2 {
+  fill: rgba(0, 0, 0, 0.5);
+}
+.day-mode .wave3 {
+  fill: rgba(0, 0, 0, 0.3);
+}
+.day-mode .wave4 {
+  fill: rgba(0, 0, 0, 1);
+}
+.tele-image-footer {
+  position: relative;
+  top: -20px;
+    padding-left: 20px;
+  width: 150px;
+  max-width: 150%; /* Ensure image doesn't exceed container width */
+  max-height: 150%; /* Ensure image doesn't exceed container height */
+  height: 150px; /* Maintain aspect ratio */
+  
+  display: block; /* Remove any potential spacing */
+  margin: 0; /* Center the image horizontally */
+  
+}
+#views {
+  font-family: 'mem', Arial, sans-serif;
+  background-color: #F5F5F5;
+  direction: rtl;
+  text-align: right;
+  
+}
+.day-mode #views {
+  color: white;
+  background-color: black;
+}
+.social-icon {
+
+            font-size: 25px;
+            margin: 16px;
+            transition: color 0.5s ease;
+            cursor: pointer;
+        }
+        .social-icon:hover {
+            color: initial; /* العودة إلى اللون الافتراضي */
+        }
+.sociall {
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  background-color: #F5F5F5;
+  
+  }
+.day-mode .social-icon {
+    color: white;
+  }
+  .day-mode .sociall{
+  background-color: black;
+  }
+  .follow {
+    color: blue;
+    font-weight: bold;
+    font-size: 16px;
+    
+  }
+  #follow {
+    justify-content: center;
+    text-align: center;
+    font-family: 'mem', Arial, sans-serif;
+background-color: #F5F5F5;
+  }
+  .day-mode #follow {
+    background-color: black;
+  }
+  .back-to-top {
+    padding: 20px 0 20px 0;
+    justify-content: center;
+    text-align: center;
+    background-color: #F5F5F5;
+    color: black;
+  }
+  .day-mode .back-to-top {
+    background-color: black;
+    color: white;
+  }
+  .text-footer {
+    direction: rtl;
+    margin-top: -60px;
+    font-family: 'mem', Arial, sans-serif;
+    color: black;
+    font-size: 18px;
+    background-color: #F5F5F5;
+    color: black;
+  }
+  
+  .day-mode .text-footer {
+    color: white;
+    background-color: black;
+  }
+.fixed-button {
+  border: 2px solid red;
+            position: fixed;
+            bottom: 0;
+            font-family: 'mem', Arial, sans-serif;
+            left: 0;
+            width: 100%;
+            background-color: #01D261;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 18px;
+            text-decoration: none;
+            
+            z-index: 1000;
+        }
+        .fixed-button i {
+            margin-left: 10px;
+        }
+.fixed-button:active {
+  background-color: red;
+  border-color: #01D261;
+}

@@ -1,0 +1,735 @@
+   
+        
+    /* Add this CSS code at the end of your <style> section */
+
+
+/* CSS styles */
+@font-face {
+    font-family: 'mem'; /* اسم الخط الذي ستستخدمه في CSS */
+    src: url('mem.ttf') format('truetype'); /* مسار ملف الخط */
+    /* يمكنك أيضًا تحديد الأوزان والنمط إذا كان هناك أكثر من نمط */
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  
+  background-color: #0A0A0A;
+
+  overflow-x: hidden;
+}
+
+header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand .fa-github {
+  font-size: 35px;
+}
+
+.brand h1 {
+  margin-left: 10px;
+}
+
+#menuIcon {
+  display: none;
+}
+
+#closeIcon {
+  display: none;
+}
+
+.navbar {
+  position: fixed;
+  top: 70px;
+  right: -70%; /* تفتح من اليمين بنسبة 70% */
+  width: 70%;
+  height: 100%;
+  background: rgb(8, 9, 19);
+  overflow-y: auto;
+  z-index: 999;
+  transition: right 0.3s ease; /* إضافة انتقال للحركة من اليمين */
+}
+
+.navbar.active {
+  right: 0; /* إظهار الـ nav عند الضغط على زر الفتح */
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 20px;
+}
+
+.navbar ul li {
+  margin-bottom: 10px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+
+  .tele-image {
+      padding-left: 50px;
+  }
+
+  .navbar {
+    
+    position: fixed;
+    width: 0;
+    right: 0; /* تأكد من إخفاء الـ nav في الهواتف */
+  }
+  .navbar.active {
+    width: 70%;
+  }
+    .navbar ul {
+    text-align: right;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(8, 9, 19);
+  }
+  .navbar ul li {
+    display: block;
+    margin-top: 11px;
+    width: 85%;
+    height: 40px;
+    text-align: right;
+    position: relative;
+    top: 8px;
+
+  }
+
+  #elebar {
+     display: none;
+     direction: rtl;
+    text-align: right; /* محاذاة النص إلى اليمين */
+    font-family: 'mem', Arial, sans-serif;
+    white-space: nowrap; /* عدم التفاف النص */
+    overflow: visible; /* السماح بظهور النص بالكامل */
+    font-size: 16px; /* ضبط حجم الخط */
+    width: auto; /* عرض تلقائي ليناسب النص */
+    position: fixed;
+    right: 0;
+  }
+/* إخفاء الروابط بشكل افتراضي */
+
+
+/* إظهار الروابط عندما تكون القائمة نشطة */
+.navbar.active #elebar {
+    display: block;
+    position: fixed;
+  
+    right: 10px; /* تعديل الموضع الأفقي حسب الحاجة */
+}
+  .brand {
+    width: 100%;
+  }
+  .hamburger {
+  
+      margin-right: 30px;
+      cursor: pointer;
+  
+    }
+  
+  
+  
+    .hamburger input {
+  
+      display: none;
+    }
+  
+    .hamburger svg {
+  
+      /* The size of the SVG defines the overall size */
+      height: 3em;
+      /* Define the transition for transforming the SVG */
+      transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  
+    .line {
+  
+      fill: none;
+      stroke: white;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 3;
+      /* Define the transition for transforming the Stroke */
+      transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+        stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  
+    .day-mode .line {
+      stroke: black;
+    }
+  
+    .line-top-bottom {
+  
+      stroke-dasharray: 12 63;
+    }
+  
+    .hamburger input:checked+svg {
+      transform: rotate(-45deg);
+    }
+  
+    .hamburger input:checked+svg .line-top-bottom {
+      stroke-dasharray: 20 300;
+      stroke-dashoffset: -32.42;
+    }
+   
+}
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5em;
+}
+
+.shop-items {
+    display: flex;
+    flex-wrap: nowrap; /* لمنع الانقسام */
+    overflow-x: auto; /* لتمكين التمرير الأفقي */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    margin-bottom: 20px;
+    justify-content: flex-start; /* تحديد البداية لمحاذاة العناصر */
+    flex-direction: row-reverse; /* تغيير اتجاه العرض إلى اليمين */
+}
+
+.shop-item {
+    background-color: white;
+    border-radius: 7px;
+    
+    
+    
+    width: 250px;
+    border: 1px solid #ddd;
+    
+}
+
+.shop-item:first-child {
+    margin-left: 0; /* إزالة التباعد بعد العنصر الأخير */
+  
+}
+
+
+
+
+
+.shop-item-title {
+    width: 100%;
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+    color: #333;
+    direction: rtl; /* توجيه النص من اليمين إلى اليسار */
+}
+
+.shop-item-tslem {
+  display: block; /* تغيير من inline-block إلى block */
+  font-weight: bold;
+  font-size: 13px;
+  color: #333;
+  padding-right: 5px;
+  direction: rtl;
+  margin-top: 5px; /* تباعد بين العناصر إذا لزم الأمر */
+}
+
+.shop-item-image {
+    display: block;
+    width: 100%; /* Ensure images take full width of their container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px;
+}
+
+.shop-item-details {
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.shop-item-price {
+    color: #333;
+    flex-grow: 1;
+}
+
+.btn {
+    text-align: center;
+    padding: .67em .67em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: .3em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.store-image {
+    text-align: center; /* Center align the image */
+    margin-bottom: 20px; /* Add space below the image */
+}
+
+.store-image img {
+  
+    max-width: 100%; /* Ensure the image scales to fit its container */
+    height: auto; /* Maintain aspect ratio */
+}
+.image-containr {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 30px; /* Adjust height as needed */
+}
+
+.tele-image {
+  
+  width: 150px;
+  max-width: 150%; /* Ensure image doesn't exceed container width */
+  max-height: 150%; /* Ensure image doesn't exceed container height */
+  height: 150px; /* Maintain aspect ratio */
+  
+  display: block; /* Remove any potential spacing */
+  margin: 0; /* Center the image horizontally */
+
+}
+.containerr {
+  margin-left: -10px;
+  margin-right: 35px;
+
+  order: -1;
+}
+.magor-logo {
+  display: flex;
+      width: 100%; /* العرض المراد بالنسبة المئوية من عرض الهاتف */
+    max-width: 100%; /* عرض أقصى للصورة */
+    margin: 0 auto; /* لتوسيط الصورة أفقيًا */
+    overflow: hidden; /* لإخفاء أي محتوى يتجاوز حدود الصورة */
+     /* جعل الصورة مقوسة */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* ظل للصورة */
+}
+h2.text {
+  font-family: 'mem', Arial, sans-serif;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #01D261;
+}
+
+h2.text::before,
+h2.text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 25%;
+    height: 1px;
+    background-color: white;
+}
+
+h2.text::before {
+    right: 90%;
+    margin-right: -15%; /* تعديل المسافة بين النص والخط الأفقي على اليمين */
+    
+}
+
+h2.text::after {
+    left: 90%;
+    margin-left: -15%; /* تعديل المسافة بين النص والخط الأفقي على اليسار */
+}
+/* تحديد مظهر المربعات */
+/* تحديد مظهر المربعات */
+/* إعداد حاوية الصورة */
+.magnor-image-container {
+  position: relative; /* لجعل المربعات تتداخل مع الصورة */
+  display: inline-block; /* للحفاظ على حجم الصورة فقط */
+}
+
+/* إعداد حاوية المربعات */
+.floating-box-container {
+  position: absolute;
+  bottom: -25px; /* لتحريك المربعات للأسفل قليلاً */
+  left: 55%;
+  transform: translateX(-55%); /* لتوسيط الحاوية أفقياً */
+  display: flex;
+  gap: 18px; /* المسافة بين المربعات */
+}
+
+/* إعداد المربعات */
+/* تنسيقات عناصر الـ floating-box */
+/* تنسيقات عناصر الـ floating-box */
+/* تنسيقات عناصر الـ floating-box */
+.floating-box {
+  width: 80px;
+  height: 90px;
+  
+  margin: 0 3px;
+  position: relative; /* يسمح لنا بوضع النص أسفل الصورة */
+  border-radius: 7px; /* تقوس الزاوية */
+  overflow: hidden; /* لإخفاء أي محتوى يتجاوز حدود المربع */
+  display: flex; /* استخدام Flexbox لمحاذاة العناصر */
+  justify-content: center; /* توسيط أفقي للعنصر داخل المربع */
+  align-items: center; /* توسيط رأسي للعنصر داخل المربع */
+}
+
+.floating-box img {
+  max-height: 60%; /* حفظ نسبة العرض إلى الارتفاع */
+  display: block; /* عرض الصورة بشكل كتلة */
+  margin: auto; /* توسيط الصورة داخل المربع */
+}
+
+.floating-box span {
+  font-family: 'mem', Arial, sans-serif;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: black;
+  font-size: 10px;
+  padding: 2px 0;
+  border-bottom-left-radius: 4px; /* تقوس الزاوية للحواف */
+  border-bottom-right-radius: 4px; /* تقوس الزاوية للحواف */
+}
+/* حاوية الصورة لجعلها نسبية */
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* المستطيل في الزاوية العلوية اليمنى */
+.top-right-rectangle {
+  font-family: 'mem', Arial, sans-serif;
+  position: absolute;
+  border-bottom-left-radius: 9px;
+  border-top-right-radius: 5.9px;
+  top: 0;
+  right: 0;
+  height: 15px;
+  padding: 4px; /* تغيير حجم الحشو */
+  margin: 0; /* تغيير حجم الهوامش */
+  font-size: 9px; /* الطول 10px * 10 */
+  background-color: #01D261; /* اللون الخلفي للمستطيل */
+  color: white; /* لون النص */
+  
+  align-items: center;
+  justify-content: center;
+   /* حجم النص */
+  font-weight: bold;
+  direction: rtl;
+  text-align: center;
+  z-index: 17;
+}
+@media (min-width: 769px) {
+  .hamburger {
+    display: none !important;
+  }
+  h2.text {
+  font-family: 'mem', Arial, sans-serif;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #01D261;
+}
+
+h2.text::before,
+h2.text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: white;
+}
+
+h2.text::before {
+    right: 95%;
+    margin-right: -33%; /* تعديل المسافة بين النص والخط الأفقي على اليمين */
+    
+}
+
+h2.text::after {
+    left: 95%;
+    margin-left: -33%; /* تعديل المسافة بين النص والخط الأفقي على اليسار */
+}
+    .day-mode .navbar ul li a {
+    color: black; /* Change link color to black in day mode for devices > 768px */
+  }
+    .navbar {
+        position: static;
+        display: flex;
+        justify-content: flex-end;
+        width: auto;
+        height: auto;
+        background: none;
+        right: 0;
+    }
+    .navbar ul {
+        display: flex;
+        gap: 20px; /* مسافة بين العناصر */
+    }
+    .navbar ul li {
+        display: inline;
+        margin: 0;
+    }
+    .navbar ul li a {
+        font-size: 18px;
+        color: white;
+    }
+    
+       #elebar {
+         order: -1;
+     direction: rtl;
+     display: initial;
+    text-align: right; /* محاذاة النص إلى اليمين */
+    
+    font-family: 'mem', Arial, sans-serif;
+    white-space: nowrap; /* عدم التفاف النص */
+    overflow: visible; /* السماح بظهور النص بالكامل */
+    font-size: 14px; /* ضبط حجم الخط */
+    width: auto; /* عرض تلقائي ليناسب النص */
+    
+  }
+  .tele-image {
+    margin-right: 110px;
+    
+  }
+  .navbar ul {
+    display: flex;
+    flex-direction: row-reverse; /* توجيه العناصر من اليمين إلى اليسار */
+    justify-content: flex-end; /* بداية عرض العناصر من اليمين للشاشات الكبيرة */
+    padding: 20px;
+}
+
+.navbar ul li {
+    margin-left: 10px; /* تباعد بين العناصر */
+
+
+}
+
+/* تعيين لون خلفية أخضر للزر المفعل */
+   .navbar a.active {
+     background-color: #01D261;
+     color: white;
+     border-radius: 5px;
+   }
+   
+}
+.shop-item {
+  position: relative;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.shop-item.blur {
+  filter: blur(5px);
+}
+
+.shop-item hover {
+  transform: scale(1.2);
+  z-index: 1;
+}
+
+.toggle {
+  
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  
+  line-height: 1;
+  order: -1;
+}
+
+.input {
+  display: none;
+}
+
+.icon {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  transition: transform 500ms;
+}
+
+.icon--moon {
+  transition-delay: 200ms;
+}
+
+.icon--sun {
+  transform: scale(0);
+}
+
+#switch:checked + .icon--moon {
+  transform: rotate(360deg) scale(0);
+}
+
+#switch:checked ~ .icon--sun {
+  transition-delay: 200ms;
+  transform: scale(1) rotate(360deg);
+}
+
+.w-8 {
+  width: 2rem /* 32px */;
+}
+/* الوضع النهاري */
+.day-mode {
+   background-color: white; /* خلفية الموقع */
+}
+
+.day-mode header {
+   background-color: white; /* لون الـ header */
+   color: black; /* لون النص داخل الـ header */
+}
+
+
+.day-mode .shop-item {
+   border-color: black; /* تغيير لون إطار العنصر */
+   background-color: black; /* تغيير خلفية العنصر */
+   color: white; /* تغيير لون النص داخل العنصر */
+}
+
+.day-mode .shop-item-title, .day-mode .shop-item-tslem {
+   color: white; /* تغيير لون النص داخل العنصر */
+}
+
+.day-mode h2.text::before, .day-mode h2.text::after {
+   background-color: black; /* تغيير لون الخط الأفقي */
+}
+
+/* الوضع الليلي (الوضع الافتراضي) */
+.night-mode {
+   background-color: #0A0A0A; /* الخلفية الليلة */
+}
+
+.night-mode header {
+   background-color: black; /* لون الـ header الليلي */
+   color: white; /* لون النص داخل الـ header */
+}
+
+.night-mode .shop-item {
+   border-color: #ddd; /* إعادة لون الإطار الافتراضي */
+   background-color: white; /* إعادة لون الخلفية الافتراضي */
+   color: #333; /* إعادة لون النص الافتراضي */
+}
+
+.night-mode .shop-item-title, .night-mode .shop-item-tslem {
+   color: #333; /* إعادة لون النص الافتراضي */
+}
+
+.night-mode h2.text::before, .night-mode h2.text::after {
+   background-color: white; /* إعادة لون الخط الأفقي */
+}
+  .booton-shop-rectangle {
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+        text-align: center;
+        align-items: center;
+        width: 85%;
+    width: %;
+    border-radius: 4px;
+    text-decoration: none; /* لإزالة تأثير النقر */
+    transition: background-color 0.3s ease;
+    display: inline-block; /* لضمان عرض وسم الارتباط بشكل صحيح */
+    margin-bottom: 2px; /* تعديل المسافة بين المستطيل والسعر حسب الحاجة */
+  }
+
+  .booton-shop-rectangle:hover {
+    background-color: darkred;
+  }
+  
+   .favorite-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 26px;
+            
+            color: green;
+            cursor: pointer;
+        }
+        .favorite-btn.active {
+            color: #01D261;
+        }
+        #favorites {
+          flex-direction: row-reverse; 
+        
+            display: flex;
+            flex-wrap: wrap;
+            margin: 16px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        #favorites .shop-item {
+            max-width: calc(50% - 20px); /* Ensure two items per row */
+        }
+.error-message {
+  color: red;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  /* أي خصائص إضافية ترغب في تطبيقها */
+}
+audio {
+  display: none;
+}
+
+
+
+
+
+#favorites .shop-item {
+  
+  margin: 8px;
+    max-width: calc(50% - 20px); /* Ensure two items per row */
+    margin-bottom: 20px; /* Add margin bottom for spacing */
+}
+#favorite:last-child {
+    margin-left: 0; /* إزالة التباعد بعد العنصر الأخير */
+  
+}

@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* CSS styles */
+@font-face {
+    font-family: 'mem'; /* اسم الخط الذي ستستخدمه في CSS */
+    src: url('mem.ttf') format('truetype'); /* مسار ملف الخط */
+    /* يمكنك أيضًا تحديد الأوزان والنمط إذا كان هناك أكثر من نمط */
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  
+  background-color: #0A0A0A;
+
+  overflow-x: hidden;
+}
+
+header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand .fa-github {
+  font-size: 35px;
+}
+
+.brand h1 {
+  margin-left: 10px;
+}
+
+
+
+.navbar {
+  position: fixed;
+  top: 70px;
+  right: -70%; /* تفتح من اليمين بنسبة 70% */
+  width: 70%;
+  height: 100%;
+  background: rgb(8, 9, 19);
+  overflow-y: auto;
+  z-index: 999;
+  transition: right 0.3s ease; /* إضافة انتقال للحركة من اليمين */
+}
+
+.navbar.active {
+  right: 0; /* إظهار الـ nav عند الضغط على زر الفتح */
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 20px;
+}
+
+.navbar ul li {
+  margin-bottom: 10px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .tele-image {
+      padding-left: 50px;
+  }
+
+  .navbar {
+    
+    position: fixed;
+    width: 0;
+    right: 0; /* تأكد من إخفاء الـ nav في الهواتف */
+  }
+  .navbar.active {
+    width: 70%;
+  }
+    .navbar ul {
+    text-align: right;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(8, 9, 19);
+  }
+  .navbar ul li {
+    display: block;
+    margin-top: 11px;
+    width: 85%;
+    height: 40px;
+    text-align: right;
+    position: relative;
+    top: 8px;
+
+  }
+
+  #elebar {
+     display: none;
+     direction: rtl;
+    text-align: right; /* محاذاة النص إلى اليمين */
+    font-family: 'mem', Arial, sans-serif;
+    white-space: nowrap; /* عدم التفاف النص */
+    overflow: visible; /* السماح بظهور النص بالكامل */
+    font-size: 16px; /* ضبط حجم الخط */
+    width: auto; /* عرض تلقائي ليناسب النص */
+    position: fixed;
+    right: 0;
+  }
+/* إخفاء الروابط بشكل افتراضي */
+
+
+/* إظهار الروابط عندما تكون القائمة نشطة */
+.navbar.active #elebar {
+    display: block;
+    position: fixed;
+  
+    right: 10px; /* تعديل الموضع الأفقي حسب الحاجة */
+}
+  .brand {
+    width: 100%;
+  }
+  .hamburger {
+  
+      margin-right: 30px;
+      cursor: pointer;
+  
+    }
+  
+  
+  
+    .hamburger input {
+  
+      display: none;
+    }
+  
+    .hamburger svg {
+  
+      /* The size of the SVG defines the overall size */
+      height: 3em;
+      /* Define the transition for transforming the SVG */
+      transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  
+    .line {
+  
+      fill: none;
+      stroke: white;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 3;
+      /* Define the transition for transforming the Stroke */
+      transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+        stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  
+    .day-mode .line {
+      stroke: black;
+    }
+  
+    .line-top-bottom {
+  
+      stroke-dasharray: 12 63;
+    }
+  
+    .hamburger input:checked+svg {
+      transform: rotate(-45deg);
+    }
+  
+    .hamburger input:checked+svg .line-top-bottom {
+      stroke-dasharray: 20 300;
+      stroke-dashoffset: -32.42;
+    }
+   
+}
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5em;
+}
+
+.shop-items {
+    display: flex;
+    flex-wrap: nowrap; /* لمنع الانقسام */
+    overflow-x: auto; /* لتمكين التمرير الأفقي */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    margin-bottom: 20px;
+    justify-content: flex-start; /* تحديد البداية لمحاذاة العناصر */
+    flex-direction: row-reverse; /* تغيير اتجاه العرض إلى اليمين */
+}
+
+.shop-item {
+    background-color: white;
+    border-radius: 7px;
+    flex: 0 0 auto; /* منع تمدد العناصر */
+    scroll-snap-align: start;
+    margin-left: 20px; /* تباعد بين العناصر */
+    padding-bottom: 10px;
+    width: 250px;
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease-in-out;
+}
+
+.shop-item:last-child {
+    margin-left: 0; /* إزالة التباعد بعد العنصر الأخير */
+}
+
+
+
+.shop-item.selected {
+    transform: scale(1.1);
+    opacity: 1;
+    z-index: 1;
+}
+
+.shop-item-title {
+    width: 100%;
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+    color: #333;
+    direction: rtl; /* توجيه النص من اليمين إلى اليسار */
+}
+
+.shop-item-tslem {
+  display: block; /* تغيير من inline-block إلى block */
+  font-weight: bold;
+  font-size: 13px;
+  color: #333;
+  padding-right: 5px;
+  direction: rtl;
+  margin-top: -5px; /* تباعد بين العناصر إذا لزم الأمر */
+}
+
+.shop-item-image {
+    display: block;
+    width: 100%; /* Ensure images take full width of their container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px;
+}
+
+.shop-item-details {
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    margin-top: -13%;
+}
+
+.shop-item-price {
+    color: #333;
+    flex-grow: 1;
+}
+
+.btn {
+    text-align: center;
+    padding: .67em .67em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: .3em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.store-image {
+    text-align: center; /* Center align the image */
+    margin-bottom: 20px; /* Add space below the image */
+}
+
+.store-image img {
+  
+    max-width: 100%; /* Ensure the image scales to fit its container */
+    height: auto; /* Maintain aspect ratio */
+}
+.image-containr {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 30px; /* Adjust height as needed */
+}
+
+.tele-image {
+
+  width: 150px;
+  max-width: 150%; /* Ensure image doesn't exceed container width */
+  max-height: 150%; /* Ensure image doesn't exceed container height */
+  height: 150px; /* Maintain aspect ratio */
+  
+  display: block; /* Remove any potential spacing */
+  margin: 0; /* Center the image horizontally */
+
+}
+.containerr {
+  margin-left: -10px;
+  margin-right: 35px;
+
+  order: -1;
+}
+.magor-logo {
+  display: flex;
+      width: 100%; /* العرض المراد بالنسبة المئوية من عرض الهاتف */
+    max-width: 100%; /* عرض أقصى للصورة */
+    margin: 0 auto; /* لتوسيط الصورة أفقيًا */
+    overflow: hidden; /* لإخفاء أي محتوى يتجاوز حدود الصورة */
+     /* جعل الصورة مقوسة */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* ظل للصورة */
+}
+h2.text-rsh {
+  font-family: 'mem', Arial, sans-serif;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #01D261;
+}
+
+h2.text-rsh::before,
+h2.text-rsh::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 25%;
+    height: 1px;
+    background-color: white;
+}
+
+h2.text-rsh::before {
+    right: 95%;
+    margin-right: -15%; /* تعديل المسافة بين النص والخط الأفقي على اليمين */
+    
+}
+
+h2.text-rsh::after {
+    left: 95%;
+    margin-left: -15%; /* تعديل المسافة بين النص والخط الأفقي على اليسار */
+}
+h2.text {
+  font-family: 'mem', Arial, sans-serif;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #01D261;
+}
+
+h2.text::before,
+h2.text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: white;
+}
+
+h2.text::before {
+    right: 100%;
+    margin-right: -35%; /* تعديل المسافة بين النص والخط الأفقي على اليمين */
+    
+}
+
+h2.text::after {
+    left: 100%;
+    margin-left: -35%; /* تعديل المسافة بين النص والخط الأفقي على اليسار */
+}
+/* تحديد مظهر المربعات */
+/* تحديد مظهر المربعات */
+/* إعداد حاوية الصورة */
+.magnor-image-container {
+  position: relative; /* لجعل المربعات تتداخل مع الصورة */
+  display: inline-block; /* للحفاظ على حجم الصورة فقط */
+}
+
+/* إعداد حاوية المربعات */
+.floating-box-container {
+  position: absolute;
+  bottom: -25px; /* لتحريك المربعات للأسفل قليلاً */
+  left: 55%;
+  transform: translateX(-55%); /* لتوسيط الحاوية أفقياً */
+  display: flex;
+  gap: 18px; /* المسافة بين المربعات */
+}
+
+/* إعداد المربعات */
+/* تنسيقات عناصر الـ floating-box */
+/* تنسيقات عناصر الـ floating-box */
+/* تنسيقات عناصر الـ floating-box */
+.floating-box {
+  width: 80px;
+  height: 90px;
+  
+  margin: 0 3px;
+  position: relative; /* يسمح لنا بوضع النص أسفل الصورة */
+  border-radius: 7px; /* تقوس الزاوية */
+  overflow: hidden; /* لإخفاء أي محتوى يتجاوز حدود المربع */
+  display: flex; /* استخدام Flexbox لمحاذاة العناصر */
+  justify-content: center; /* توسيط أفقي للعنصر داخل المربع */
+  align-items: center; /* توسيط رأسي للعنصر داخل المربع */
+}
+
+.floating-box img {
+  max-height: 60%; /* حفظ نسبة العرض إلى الارتفاع */
+  display: block; /* عرض الصورة بشكل كتلة */
+  margin: auto; /* توسيط الصورة داخل المربع */
+}
+
+.floating-box span {
+  font-family: 'mem', Arial, sans-serif;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: black;
+  font-size: 10px;
+  padding: 2px 0;
+  border-bottom-left-radius: 4px; /* تقوس الزاوية للحواف */
+  border-bottom-right-radius: 4px; /* تقوس الزاوية للحواف */
+}
+/* حاوية الصورة لجعلها نسبية */
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* المستطيل في الزاوية العلوية اليمنى */
+.top-right-rectangle {
+  font-family: 'mem', Arial, sans-serif;
+  position: absolute;
+  border-bottom-left-radius: 9px;
+  border-top-right-radius: 5.9px;
+  top: 0;
+  right: 0;
+  height: 15px;
+  padding: 4px; /* تغيير حجم الحشو */
+  margin: 0; /* تغيير حجم الهوامش */
+  font-size: 12px; /* الطول 10px * 10 */
+  background-color: #01D261; /* اللون الخلفي للمستطيل */
+  color: white; /* لون النص */
+  
+  align-items: center;
+  justify-content: center;
+   /* حجم النص */
+  font-weight: bold;
+  direction: rtl;
+  text-align: center;
+  z-index: 17;
+}
+@media (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+  h2.text {
+  font-family: 'mem', Arial, sans-serif;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #01D261;
+}
+
+h2.text::before,
+h2.text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: white;
+}
+
+h2.text::before {
+    right: 95%;
+    margin-right: -33%; /* تعديل المسافة بين النص والخط الأفقي على اليمين */
+    
+}
+
+h2.text::after {
+    left: 95%;
+    margin-left: -33%; /* تعديل المسافة بين النص والخط الأفقي على اليسار */
+}
+    .day-mode .navbar ul li a {
+    color: black; /* Change link color to black in day mode for devices > 768px */
+  }
+
+ .navbar {
+            position: static;
+            width: 100%;
+            background: none;
+            overflow-x: auto; /* لتمكين التمرير الأفقي */
+            white-space: nowrap; /* منع التفاف النص */
+            display: flex;
+            align-items: center; /* لمحاذاة الروابط عموديًا في الوسط */
+        }
+        .navbar ul {
+            display: flex;
+            flex-direction: row-reverse; /* لجعل الترتيب من اليمين إلى اليسار */
+            padding: 0;
+            margin: 0;
+            list-style: none; /* إزالة نقاط القائمة */
+            gap: 18px; /* مسافة بين العناصر */
+        }
+        .navbar ul li {
+            display: inline-block;
+        }
+        .navbar ul li a {
+            font-size: 18px;
+            color: white;
+            text-decoration: none; /* إزالة الخط السفلي */
+        }
+
+        /* ترتيب العناصر باستخدام خاصية order */
+        .navbar ul li:nth-child(1) { order: 1; }
+        .navbar ul li:nth-child(2) { order: 2; }
+        .navbar ul li:nth-child(3) { order: 3; }
+        .navbar ul li:nth-child(4) { order: 4; }
+        .navbar ul li:nth-child(5) { order: 5; }
+        .navbar ul li:nth-child(6) { order: 6; }
+        .navbar ul li:nth-child(7) { order: 7; }
+        .navbar ul li:nth-child(8) { order: 8; }
+        .navbar ul li:nth-child(9) { order: 9; }
+        .navbar ul li:nth-child(10) { order: 10; }
+
+        #elebar {
+            direction: rtl;
+            text-align: right; /* محاذاة النص إلى اليمين */
+            font-family: 'mem', Arial, sans-serif;
+            white-space: nowrap; /* عدم التفاف النص */
+            overflow: visible; /* السماح بظهور النص بالكامل */
+            font-size: 14px; /* ضبط حجم الخط */
+            width: auto; /* عرض تلقائي ليناسب النص */
+        }
+  .tele-image {
+    margin-right: 110px;
+    
+  }
+  
+
+
+/* تعيين لون خلفية أخضر للزر المفعل */
+   .navbar a.active {
+     background-color: #01D261;
+     color: white;
+     border-radius: 5px;
+   }
+   
+}
+.shop-item {
+  position: relative;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.shop-item.blur {
+  filter: blur(5px);
+}
+
+.shop-item hover {
+  transform: scale(1.2);
+  z-index: 1;
+}
+
+.toggle {
+  
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  
+  line-height: 1;
+  order: -1;
+}
+
+.input {
+  display: none;
+}
+
+.icon {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  transition: transform 500ms;
+}
+
+.icon--moon {
+  transition-delay: 200ms;
+}
+
+.icon--sun {
+  transform: scale(0);
+}
+
+#switch:checked + .icon--moon {
+  transform: rotate(360deg) scale(0);
+}
+
+#switch:checked ~ .icon--sun {
+  transition-delay: 200ms;
+  transform: scale(1) rotate(360deg);
+}
+
+.w-8 {
+  width: 2rem /* 32px */;
+}
+/* الوضع النهاري */
+.day-mode {
+   background-color: white; /* خلفية الموقع */
+}
+
+.day-mode header {
+   background-color: white; /* لون الـ header */
+   color: black; /* لون النص داخل الـ header */
+}
+
+
+.day-mode .shop-item {
+   border-color: black; /* تغيير لون إطار العنصر */
+   background-color: black; /* تغيير خلفية العنصر */
+   color: white; /* تغيير لون النص داخل العنصر */
+}
+
+.day-mode .shop-item-title, .day-mode .shop-item-tslem {
+   color: white; /* تغيير لون النص داخل العنصر */
+}
+
+.day-mode h2.text::before, .day-mode h2.text::after {
+   background-color: black; /* تغيير لون الخط الأفقي */
+}
+.day-mode h2.text-rsh::before, .day-mode h2.text-rsh::after {
+   background-color: black; /* تغيير لون الخط الأفقي */
+}
+/* الوضع الليلي (الوضع الافتراضي) */
+.night-mode {
+   background-color: #0A0A0A; /* الخلفية الليلة */
+}
+
+.night-mode header {
+   background-color: black; /* لون الـ header الليلي */
+   color: white; /* لون النص داخل الـ header */
+}
+
+.night-mode .shop-item {
+   border-color: #ddd; /* إعادة لون الإطار الافتراضي */
+   background-color: white; /* إعادة لون الخلفية الافتراضي */
+   color: #333; /* إعادة لون النص الافتراضي */
+}
+
+
+
+.night-mode h2.text::before, .night-mode h2.text::after {
+   background-color: white; /* إعادة لون الخط الأفقي */
+}
+  .booton-shop-rectangle {
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    align-items: center;
+    width: 85%;
+    border-radius: 4px;
+    text-decoration: none; /* لإزالة تأثير النقر */
+    transition: background-color 0.3s ease;
+    display: inline-block; /* لضمان عرض وسم الارتباط بشكل صحيح */
+    margin-right: 2%; /* تعديل المسافة بين المستطيل والسعر حسب الحاجة */
+  }
+
+  .booton-shop-rectangle:hover {
+    background-color: darkred;
+  }
+  
+   .favorite-btn {
+            
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+        }
+        .favorite-btn.active {
+            color: red;
+        }
+        #favorites {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        #favorites .shop-item {
+            max-width: calc(50% - 20px); /* Ensure two items per row */
+        }
+         
+  #heart-container {
+    position: absolute;
+    bottom: 40px;
+left: 83%;
+color:;
+    --heart-color: #01D261;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    transition: .3s;
+  }
+   
+  #heart-container .checkbox {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 20;
+    cursor: pointer;
+  }
+  
+  #heart-container .svg-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #heart-container .svg-outline,
+  #heart-container .svg-filled {
+    fill: var(--heart-color);
+    position: absolute;
+  }
+  
+  #heart-container .svg-filled {
+    animation: keyframes-svg-filled 1s;
+    display: none;
+  }
+  
+  #heart-container .svg-celebrate {
+    position: absolute;
+    animation: keyframes-svg-celebrate .5s;
+    animation-fill-mode: forwards;
+    display: none;
+    stroke: var(--heart-color);
+    fill: var(--heart-color);
+    stroke-width: 2px;
+  }
+  
+  #heart-container .checkbox:checked~.svg-container .svg-filled {
+    display: block
+  }
+  
+  #heart-container .checkbox:checked~.svg-container .svg-celebrate {
+    display: block
+  }
+  
+  @keyframes keyframes-svg-filled {
+    0% {
+      transform: scale(0);
+    }
+  
+    25% {
+      transform: scale(1.2);
+    }
+  
+    50% {
+      transform: scale(1);
+      filter: brightness(1.5);
+    }
+  }
+  
+  @keyframes keyframes-svg-celebrate {
+    0% {
+      transform: scale(0);
+    }
+  
+    50% {
+      opacity: 1;
+      filter: brightness(1.5);
+    }
+  
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+      display: none;
+    }
+  }
+
+  
+@import url(//fonts.googleapis.com/css?family=Lato:300:400);
+
+.flex {
+  /*Flexbox for containers*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.waves {
+  background-color: black;
+  color: red;
+  position: relative;
+  width: 100%;
+  height: 15vh;
+  margin-bottom: -7px;
+  /*Fix for safari gap*/
+  min-height: 100px;
+  max-height: 150px;
+}
+.day-mode .waves {
+  background-color: white;
+}
+.content {
+  position: relative;
+  height: 20vh;
+  text-align: center;
+  background-color: #F5F5F5;
+}
+.day-mode .content {
+  background-color: black;
+  
+}
+/* Animation */
+
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+
+.parallax > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+
+.parallax > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+
+.parallax > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+
+.parallax > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+
+@keyframes move-forever {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
+/* /* Shrinking for mobile */
+@media (max-width: 768px) {
+  .waves {
+    height: 40px;
+    min-height: 40px;
+  }
+.day-mode .content {
+  background-color: black;
+
+}
+  .content {
+    height: 15vh;
+    
+  }
+
+  
+}
+
+.footer-content {
+
+  background-color: #F5F5F5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.day-mode .footer-content {
+  background-color: black;
+}
+.wave1 {
+  fill: rgba(255, 255, 255, 0.7);
+}
+
+.wave2 {
+  fill: rgba(255, 255, 255, 0.5);
+}
+
+.wave3 {
+  fill: rgba(255, 255, 255, 0.3);
+}
+
+.wave4 {
+  fill: #F5F5F5;
+}
+.day-mode .wave1 {
+  fill: rgba(0, 0, 0, 0.7);
+}
+.day-mode .wave2 {
+  fill: rgba(0, 0, 0, 0.5);
+}
+.day-mode .wave3 {
+  fill: rgba(0, 0, 0, 0.3);
+}
+.day-mode .wave4 {
+  fill: rgba(0, 0, 0, 1);
+}
+.tele-image-footer {
+  position: relative;
+  top: -20px;
+    padding-left: 20px;
+  width: 150px;
+  max-width: 150%; /* Ensure image doesn't exceed container width */
+  max-height: 150%; /* Ensure image doesn't exceed container height */
+  height: 150px; /* Maintain aspect ratio */
+  
+  display: block; /* Remove any potential spacing */
+  margin: 0; /* Center the image horizontally */
+  
+}
+#views {
+  font-family: 'mem', Arial, sans-serif;
+  background-color: #F5F5F5;
+  direction: rtl;
+  text-align: right;
+  
+}
+.day-mode #views {
+  color: white;
+  background-color: black;
+}
+.social-icon {
+
+            font-size: 25px;
+            margin: 16px;
+            transition: color 0.5s ease;
+            cursor: pointer;
+        }
+        .social-icon:hover {
+            color: initial; /* العودة إلى اللون الافتراضي */
+        }
+.sociall {
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  background-color: #F5F5F5;
+  
+  }
+.day-mode .social-icon {
+    color: white;
+  }
+  .day-mode .sociall{
+  background-color: black;
+  }
+  .follow {
+    color: blue;
+    font-weight: bold;
+    font-size: 16px;
+    
+  }
+  #follow {
+    justify-content: center;
+    text-align: center;
+    font-family: 'mem', Arial, sans-serif;
+background-color: #F5F5F5;
+  }
+  .day-mode #follow {
+    background-color: black;
+  }
+  .back-to-top {
+    padding: 20px 0 20px 0;
+    justify-content: center;
+    text-align: center;
+    background-color: #F5F5F5;
+  }
+  .day-mode .back-to-top {
+    
+    background-color: black;
+    color: white;
+  }
+  .text-footer {
+    direction: rtl;
+    margin-top: -60px;
+    font-family: 'mem', Arial, sans-serif
+    color: black;
+    font-size: 18px;
+    background-color: #F5F5F5;
+    color: black;
+  }
+  
+  .day-mode .text-footer {
+    color: white;
+    background-color: black;
+  }
+  
+
+
+
+</style>
+
+</head>
+<body>
+<section id="hom">
+<header>
+
+  <div class="brand">
+ <img class="tele-image" src="https://www.raed.net/img?id=860412" alt="Alternative Text">
+  </div>
+  <div class="containerr">
+  <label class="toggle" for="switch">
+    <input id="switch" class="input" type="checkbox" />
+<div class="icon icon--moon">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="30"
+        height="30"
+        viewBox="0 0 512 512"
+        id="moon"
+      >
+        <g>
+          <path
+            fill="#6A6D68"
+            d="M412.95,381.15c-8.05,10.119-16.94,19.33-26.55,27.54c-2.271,1.939-4.58,3.819-6.92,5.64   c-0.261,0.21-0.521,0.42-0.78,0.63c-0.09,0.07-0.19,0.13-0.28,0.2c-5.979,4.6-12.2,8.83-18.64,12.689   c-1.92,1.15-3.851,2.28-5.811,3.37c-18.14,10.061-37.819,17.221-58.42,21.16c-12.27,2.34-24.87,3.55-37.66,3.55   c-27.92,0-54.94-5.739-80.32-17.04c-7.74-3.46-15.3-7.43-22.47-11.81c-6.96-4.24-13.77-9-20.24-14.14   c-5.28-4.19-10.3-8.62-15.07-13.25c-1.3-1.261-2.57-2.54-3.82-3.83c-30.43-31.21-49.57-71.37-54.6-115.38   c-4.54-39.75,2.83-79.04,20.95-113.75c4.99-9.561,10.81-18.78,17.41-27.561c0.2-0.26,0.4-0.529,0.6-0.79   c0.9-1.18,1.81-2.359,2.74-3.529c37.77-47.521,94.29-74.78,155.07-74.78c45.101,0,87.641,14.87,123.021,42.99   c1.54,1.22,2.89,2.33,4.14,3.39c3.16,2.64,6.29,5.43,9.51,8.5c0.49,0.47,0.99,0.94,1.471,1.43c1.3,1.25,2.58,2.54,3.84,3.83   c32.41,33.351,51.979,77.011,55.31,123.75C458.97,293.51,443.88,342.23,412.95,381.15z"
+            opacity=".9"
+          ></path>
+          <path
+            fill="#A3AAA0"
+            d="M408.95,377.15c-8.05,10.119-16.94,19.33-26.55,27.54c-2.271,1.939-4.58,3.819-6.92,5.64   c-0.261,0.21-0.521,0.42-0.78,0.63c-0.09,0.07-0.19,0.13-0.28,0.2c-5.979,4.6-12.2,8.83-18.64,12.689   c-1.92,1.15-3.851,2.28-5.811,3.37c-19.76,10.96-41.359,18.471-63.979,22.141c-10.51,1.699-21.23,2.569-32.101,2.569   c-27.92,0-54.94-5.739-80.32-17.04c-7.74-3.46-15.3-7.43-22.47-11.81c-6.96-4.24-13.77-9-20.24-14.14   c-5.21-4.141-10.17-8.511-14.89-13.08c-0.06-0.051-0.12-0.11-0.18-0.17c-32.64-31.721-53.18-73.381-58.42-119.21   c-4.54-39.75,2.83-79.04,20.95-113.75c4.99-9.561,10.81-18.78,17.41-27.561c1.09-1.449,2.2-2.89,3.34-4.319   c0.55-0.69,1.1-1.37,1.65-2.051c37.76-46.25,93.52-72.729,153.42-72.729c45.101,0,87.641,14.87,123.021,42.99   c1.54,1.22,2.89,2.33,4.14,3.39c3.16,2.64,6.29,5.43,9.51,8.5c1.811,1.72,3.58,3.48,5.311,5.26c0.05,0.061,0.11,0.11,0.16,0.17   c32.319,33.33,51.83,76.92,55.149,123.58C454.97,289.51,439.88,338.23,408.95,377.15z"
+          ></path>
+          <circle
+            cx="285"
+            cy="156"
+            r="44.5"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <circle
+            cx="385"
+            cy="300"
+            r="21.5"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <circle
+            cx="166"
+            cy="296.5"
+            r="27.84"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <circle
+            cx="261.25"
+            cy="272.75"
+            r="14.75"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <circle
+            cx="151.5"
+            cy="184"
+            r="28"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <circle
+            cx="297.5"
+            cy="382.501"
+            r="27.5"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <circle
+            cx="395"
+            cy="213"
+            r="18.5"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <circle
+            cx="317"
+            cy="216"
+            r="8"
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+          ></circle>
+          <path
+            fill="#666865"
+            stroke="#5E5E5D"
+            stroke-miterlimit="10"
+            stroke-width="4"
+            d="M299.55,450.38   c-12.27,2.34-24.87,3.55-37.66,3.55c-27.92,0-54.94-5.739-80.32-17.04c-7.74-3.46-15.3-7.43-22.47-11.81   c-6.96-4.24-13.77-9-20.24-14.14c-5.28-4.19-10.3-8.62-15.07-13.25c-1.3-1.261-2.57-2.54-3.82-3.83   c-0.06-0.051-0.12-0.11-0.18-0.17c-32.64-31.721-53.18-73.381-58.42-119.21c-4.54-39.75,2.83-79.04,20.95-113.75   c4.99-9.561,10.81-18.78,17.41-27.561c1.09-1.449,2.2-2.89,3.34-4.319c0.55-0.69,1.1-1.37,1.65-2.051   c-0.16,3.011-0.29,6.2-0.39,9.58c-2.39,79.15,12.97,253.43,185.661,310.98C293.12,448.41,296.31,449.42,299.55,450.38z"
+            opacity=".2"
+          ></path>
+        </g>
+      </svg>
+    </div>
+
+<div class="w-8 icon icon--sun">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.5 47.5" id="sun">
+        <defs>
+          <clipPath id="a">
+            <path d="M0 38h38V0H0v38Z"></path>
+          </clipPath>
+        </defs>
+        <g
+          fill="#ffac33"
+          clip-path="url(#a)"
+          transform="matrix(1.25 0 0 -1.25 0 47.5)"
+        >
+          <path
+            d="M17 35s0 2 2 2 2-2 2-2v-2s0-2-2-2-2 2-2 2v2zM35 21s2 0 2-2-2-2-2-2h-2s-2 0-2 2 2 2 2 2h2zM5 21s2 0 2-2-2-2-2-2H3s-2 0-2 2 2 2 2 2h2zM10.121 29.706s1.414-1.414 0-2.828-2.828 0-2.828 0l-1.415 1.414s-1.414 1.414 0 2.829c1.415 1.414 2.829 0 2.829 0l1.414-1.415ZM31.121 8.707s1.414-1.414 0-2.828-2.828 0-2.828 0l-1.414 1.414s-1.414 1.414 0 2.828 2.828 0 2.828 0l1.414-1.414ZM30.708 26.879s-1.414-1.414-2.828 0 0 2.828 0 2.828l1.414 1.414s1.414 1.414 2.828 0 0-2.828 0-2.828l-1.414-1.414ZM9.708 5.879s-1.414-1.414-2.828 0 0 2.828 0 2.828l1.414 1.414s1.414 1.414 2.828 0 0-2.828 0-2.828L9.708 5.879ZM17 5s0 2 2 2 2-2 2-2V3s0-2-2-2-2 2-2 2v2zM29 19c0 5.523-4.478 10-10 10-5.523 0-10-4.477-10-10 0-5.522 4.477-10 10-10 5.522 0 10 4.478 10 10"
+          ></path>
+        </g>
+      </svg>
+    </div>
+  </label>
+</div>
+
+<label class="hamburger">
+    <input onclick="toggleNav()" type="checkbox">
+    <svg viewBox="0 0 32 32">
+      <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+      <path class="line" d="M7 16 27 16"></path>
+    </svg>
+  </label>
+
+
+<div class="navbar" id="nav">
+  <ul>
+    <li><a id="elebar" href="#hom">القائمة الرئيسية</a></li>
+    <li><a id="elebar" href="#plus"> متجر بلس</a></li>
+<li><a id="elebar" href="#netflx">  نتفلكس</a></li>
+<li><a id="elebar" href="#iptv">  iptv </a></li>
+<li><a id="elebar" href="#mv">  موفي بوكس</a></li>
+
+  <li><a id="elebar" href="#sh">  شاهد</a></li>
+<li><a id="elebar" href="#tod">  تـود </a></li>
+<li><a id="elebar" href="#osn"> اوسن </a></li>
+  <li><a id="elebar" href="#rsh">  رشق منصات | شحن العاب </a></li>
+   <li><a id="elebar" href="/favv.html"> المفضلة </a></li>
+
+  </ul>
+</div>
+
+</header>
+</section>
+<br><br><br>
+
+  
+<div class="magnor-image-container">
+  <img class="magor-logo" src="assets/i.jpeg" alt="Main Image">
+
+
+
+</div>
+<br><br><br>
+
+<section id="plus" class="container content-section">
+
+  <div class="store-image">
+    <img src="https://www12.0zz0.com/2024/06/24/14/942104952.jpg" alt="Store Image">
+    <h2 class="text"> متجر بلس</h2>
+  </div>
+
+  <div class="shop-items">
+<div class="shop-item">
+      <div class="image-container">
+        <img class="shop-item-image" src="https://www12.0zz0.com/2024/06/24/14/846790983.jpg" alt="Shop Item">
+        <div class="top-right-rectangle">   متجر بلس ايفون - تفعيل انتضار       </div>
+
+        <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+          <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+          <div class="svg-container">
+            <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+              </path>
+            </svg>
+            <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+              </path>
+            </svg>
+            <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,10 20,20"></polygon>
+              <polygon points="10,50 20,50"></polygon>
+              <polygon points="20,80 30,70"></polygon>
+              <polygon points="90,10 80,20"></polygon>
+              <polygon points="90,50 80,50"></polygon>
+              <polygon points="80,80 70,70"></polygon>
+            </svg>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="shop-item-details">
+        <span class="shop-item-title">    اشتراك متجر بلس لمدة سنة</span>
+      </div>
+      <span class="shop-item-tslem">
+         
+        <br>
+        <span id="price" style="color: red;">بسعر 20,000 دينار</span>
+        <a href="plus-iphone.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+      </span>
+
+    </div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www12.0zz0.com/2024/06/24/14/846790983.jpg" alt="Shop Item">
+    <div class="top-right-rectangle"> متجر بلس ايباد - تفعيل انتضار </div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title"> اشتراك متجر بلس لمدة سنة</span>
+  </div>
+  <span class="shop-item-tslem">
+
+    <br>
+    <span id="price" style="color: red;">بسعر 20,000 دينار</span>
+    <a href="plus-ipad.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+  </div>
+</section>
+
+<section id="netflx" class="container content-section">
+
+    <div class="store-image">
+        <img src="https://www7.0zz0.com/2024/06/24/14/746738165.jpg" alt="Store Image">
+<h2 class="text"> نتفلكس</h2>
+    </div>
+
+    <div class="shop-items">
+<div class="shop-item">
+    <div class="image-container">
+      <img class="shop-item-image" src="https://www3.0zz0.com/2024/06/24/14/578130461.jpg" alt="Shop Item">
+      <div class="top-right-rectangle">ملف رسمي خاص | 4k</div>
+
+<div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+        <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+        <div class="svg-container">
+          <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+            </path>
+          </svg>
+          <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+            </path>
+          </svg>
+          <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="10,10 20,20"></polygon>
+            <polygon points="10,50 20,50"></polygon>
+            <polygon points="20,80 30,70"></polygon>
+            <polygon points="90,10 80,20"></polygon>
+            <polygon points="90,50 80,50"></polygon>
+            <polygon points="80,80 70,70"></polygon>
+          </svg>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="shop-item-details">
+      <span class="shop-item-title">اشتراك Netflix لمدة شهر كامل</span>
+    </div>
+    <span class="shop-item-tslem">
+      تفعيل فوري
+      <br>
+      <span id="price" style="color: red;">بسعر 7,000 دينار</span>
+  <a href="netflix-profile.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+    </span>
+
+  </div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www3.0zz0.com/2024/06/24/14/225680802.jpg" alt="Shop Item">
+    <div class="top-right-rectangle">حساب رسمي خاص | 4k</div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">اشتراك Netflix لمدة شهر كامل</span>
+  </div>
+  <span class="shop-item-tslem">
+    تفعيل فوري
+    <br>
+    <span id="price" style="color: red;">بسعر 25,000 دينار</span>
+    <a href="netflix-acount.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+    </div>
+</section>
+
+<section id="iptv" class="container content-section">
+
+  <div class="store-image">
+    <img src="https://www4.0zz0.com/2024/06/24/14/459331257.jpg" alt="Store Image">
+    <h2 class="text"> iptv</h2>
+  </div>
+
+  <div class="shop-items">
+<div class="shop-item">
+      <div class="image-container">
+        <img class="shop-item-image" src="https://www4.0zz0.com/2024/06/24/14/420286767.jpg" alt="Shop Item">
+        <div class="top-right-rectangle">    سيرفر نوفا - نت ضعيف  </div>
+
+        <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+          <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+          <div class="svg-container">
+            <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+                
+              </path>
+            </svg>
+            <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+              </path>
+            </svg>
+            <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,10 20,20"></polygon>
+              <polygon points="10,50 20,50"></polygon>
+              <polygon points="20,80 30,70"></polygon>
+              <polygon points="90,10 80,20"></polygon>
+              <polygon points="90,50 80,50"></polygon>
+              <polygon points="80,80 70,70"></polygon>
+            </svg>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="shop-item-details">
+        <span class="shop-item-title">اشتراك iptv لمدة سنة </span>
+      </div>
+      <span class="shop-item-tslem">
+        تفعيل فوري
+        <br>
+        <span id="price" style="color: red;">بسعر 20,000 دينار</span>
+        <a href="iptv-nova.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+      </span>
+
+    </div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www7.0zz0.com/2024/06/24/14/401105813.jpg" alt="Shop Item">
+    <div class="top-right-rectangle"> سيرفر ماكس - نت متوسط </div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">اشتراك iptv لمدة سنة </span>
+  </div>
+  <span class="shop-item-tslem">
+    تفعيل فوري
+    <br>
+    <span id="price" style="color: red;">بسعر 20,000 دينار</span>
+    <a href="iptv-max.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+  </div>
+</section>
+<section id="mv" class="container content-section">
+
+  <div class="store-image">
+    <img src="https://www12.0zz0.com/2024/06/24/14/754091361.jpg" alt="Store Image">
+    <h2 class="text-rsh"> موفي بوكس</h2>
+  </div>
+
+  <div class="shop-items">
+    <div class="shop-item">
+      <div class="image-container">
+        <img class="shop-item-image" src="https://www3.0zz0.com/2024/06/24/14/748163922.jpg" alt="Shop Item">
+        <div class="top-right-rectangle">ملف رسمي خاص | 4k</div>
+
+        <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+          <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+          <div class="svg-container">
+            <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+              </path>
+            </svg>
+            <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+              </path>
+            </svg>
+            <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,10 20,20"></polygon>
+              <polygon points="10,50 20,50"></polygon>
+              <polygon points="20,80 30,70"></polygon>
+              <polygon points="90,10 80,20"></polygon>
+              <polygon points="90,50 80,50"></polygon>
+              <polygon points="80,80 70,70"></polygon>
+            </svg>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="shop-item-details">
+        <span class="shop-item-title">اشتراك موفي بوكس لمدة شهر كامل</span>
+      </div>
+      <span class="shop-item-tslem">
+        تفعيل فوري
+        <br>
+        <span id="price" style="color: red;">بسعر 5,000 دينار</span>
+        <a href="mv-profile.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+      </span>
+
+    </div>
+
+  </div>
+</section>
+
+<section id="sh" class="container content-section">
+
+  <div class="store-image">
+    <img src="https://www12.0zz0.com/2024/06/24/14/458971337.jpg" alt="Store Image">
+    <h2 class="text"> شاهد</h2>
+  </div>
+
+  <div class="shop-items">
+<div class="shop-item">
+      <div class="image-container">
+        <img class="shop-item-image" src="https://www12.0zz0.com/2024/06/24/14/438444837.jpg" alt="Shop Item">
+        <div class="top-right-rectangle"> باقة VIP</div>
+
+        <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+          <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+          <div class="svg-container">
+            <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+              </path>
+            </svg>
+            <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+              </path>
+            </svg>
+            <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,10 20,20"></polygon>
+              <polygon points="10,50 20,50"></polygon>
+              <polygon points="20,80 30,70"></polygon>
+              <polygon points="90,10 80,20"></polygon>
+              <polygon points="90,50 80,50"></polygon>
+              <polygon points="80,80 70,70"></polygon>
+            </svg>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="shop-item-details">
+        <span class="shop-item-title">اشتراك شاهد لمدة شهر كامل</span>
+      </div>
+      <span class="shop-item-tslem">
+        تفعيل فوري
+        <br>
+        <span id="price" style="color: red;">بسعر 10,000 دينار</span>
+        <a href="sh-vip.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+      </span>
+
+    </div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www8.0zz0.com/2024/06/24/14/158394037.jpg" alt="Shop Item">
+    <div class="top-right-rectangle">  
+    باقه VIP&SPORT 
+    </div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">اشتراك شاهد لمدة شهر كامل</span>
+  </div>
+  <span class="shop-item-tslem">
+    تفعيل فوري
+    <br>
+    <span id="price" style="color: red;">بسعر 15,000 دينار</span>
+    <a href="sh-sport.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+  </div>
+</section>
+<section id="tod" class="container content-section">
+
+    <div class="store-image">
+        <img src="https://www8.0zz0.com/2024/06/24/14/116789611.jpg" alt="Store Image">
+<h2 class="text"> تود</h2>
+    </div>
+
+    <div class="shop-items">
+<div class="shop-item">
+    <div class="image-container">
+      <img class="shop-item-image" src="https://www12.0zz0.com/2024/06/24/14/218550961.jpg" alt="Shop Item">
+      <div class="top-right-rectangle">
+        جودة HD  </div>
+
+<div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+        <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+        <div class="svg-container">
+          <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+            </path>
+          </svg>
+          <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+            </path>
+          </svg>
+          <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="10,10 20,20"></polygon>
+            <polygon points="10,50 20,50"></polygon>
+            <polygon points="20,80 30,70"></polygon>
+            <polygon points="90,10 80,20"></polygon>
+            <polygon points="90,50 80,50"></polygon>
+            <polygon points="80,80 70,70"></polygon>
+          </svg>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="shop-item-details">
+      <span class="shop-item-title">اشتراك تود لمدة شهر كامل</span>
+    </div>
+    <span class="shop-item-tslem">
+      تفعيل فوري
+      <br>
+      <span id="price" style="color: red;">بسعر 10,000 دينار</span>
+  <a href="tod-hd.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+    </span>
+
+  </div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www8.0zz0.com/2024/06/24/14/923472784.jpg" alt="Shop Item">
+    <div class="top-right-rectangle">
+      جودة FHD </div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">اشتراك تود لمدة شهر كامل</span>
+  </div>
+  <span class="shop-item-tslem">
+    تفعيل فوري
+    <br>
+    <span id="price" style="color: red;">بسعر 16,000 دينار</span>
+    <a href="tod-fhd.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www12.0zz0.com/2024/06/24/14/353507657.jpg" alt="Shop Item">
+    <div class="top-right-rectangle">
+      جودة 4K </div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">اشتراك تود لمدة شهر كامل</span>
+  </div>
+  <span class="shop-item-tslem">
+    تفعيل فوري
+    <br>
+    <span id="price" style="color: red;">بسعر 22,000 دينار</span>
+    <a href="tod-4k.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+    </div>
+</section>
+<section id="osn" class="container content-section">
+
+  <div class="store-image">
+    <img src="https://www4.0zz0.com/2024/06/24/14/161235704.jpg" alt="Store Image">
+    <h2 class="text"> اوسن</h2>
+  </div>
+
+  <div class="shop-items">
+    <div class="shop-item">
+      <div class="image-container">
+        <img class="shop-item-image" src="https://www8.0zz0.com/2024/06/24/14/230795165.jpg" alt="Shop Item">
+        <div class="top-right-rectangle">ملف رسمي خاص | 4k</div>
+<div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+          <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+          <div class="svg-container">
+            <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+              </path>
+            </svg>
+            <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+              </path>
+            </svg>
+            <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,10 20,20"></polygon>
+              <polygon points="10,50 20,50"></polygon>
+              <polygon points="20,80 30,70"></polygon>
+              <polygon points="90,10 80,20"></polygon>
+              <polygon points="90,50 80,50"></polygon>
+              <polygon points="80,80 70,70"></polygon>
+            </svg>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="shop-item-details">
+        <span class="shop-item-title">اشتراك اوسن بلس لمدة شهر كامل</span>
+      </div>
+      <span class="shop-item-tslem">
+        تفعيل فوري
+        <br>
+        <span id="price" style="color: red;">بسعر 8,000 دينار</span>
+        <a href="osn.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+      </span>
+
+    </div>
+
+  </div>
+</section>
+
+<section id="rsh" class="container content-section">
+
+  <div class="store-image">
+    <img src="https://www12.0zz0.com/2024/06/24/14/998411111.jpg" alt="Store Image">
+    <h2 class="text-rsh"> رشق | شحن العاب</h2>
+  </div>
+
+  <div class="shop-items">
+<div class="shop-item">
+      <div class="image-container">
+        <img class="shop-item-image" src="https://www12.0zz0.com/2024/06/24/14/545394953.jpg" alt="Shop Item">
+        <div class="top-right-rectangle">   رشق منصات بضمان</div>
+
+        <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+          <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+          <div class="svg-container">
+            <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+              </path>
+            </svg>
+            <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+              </path>
+            </svg>
+            <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,10 20,20"></polygon>
+              <polygon points="10,50 20,50"></polygon>
+              <polygon points="20,80 30,70"></polygon>
+              <polygon points="90,10 80,20"></polygon>
+              <polygon points="90,50 80,50"></polygon>
+              <polygon points="80,80 70,70"></polygon>
+            </svg>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="shop-item-details">
+        <span class="shop-item-title">   رشق جميع منصات التواصل الاجتماعي</span>
+      </div>
+      <span class="shop-item-tslem">
+        استلام فوري
+        <br>
+        <span id="price" style="color: red;">السعر حسب الكمية   </span>
+        <a href="social.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+      </span>
+
+    </div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www3.0zz0.com/2024/06/24/14/555138490.jpg" alt="Shop Item">
+    <div class="top-right-rectangle">شحن شدات ببجي</div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">
+      شحن شدات ببجي   </span>
+  </div>
+  <span class="shop-item-tslem">
+     استلام فوري
+    <br>
+    <span id="price" style="color: red;">السعر حسب الكمية </span>
+    <a href="pubg.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www8.0zz0.com/2024/06/24/14/164853232.jpg" alt="Shop Item">
+    <div class="top-right-rectangle">
+      شحن جواهر لودو
+    </div>
+
+<div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">
+        شحن جواهر يلا لودو  
+       </span>
+  </div>
+  <span class="shop-item-tslem">
+    استلام فوري
+    <br>
+    <span id="price" style="color: red;"> السعر حسب الكمية </span>
+    <a href="lodo.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+<div class="shop-item">
+  <div class="image-container">
+    <img class="shop-item-image" src="https://www12.0zz0.com/2024/06/24/14/401287746.jpg" alt="Shop Item">
+    <div class="top-right-rectangle">
+      شحن جواهر فري فاير
+    </div>
+
+    <div class="favorite-btn" id="heart-container" title="Like" onclick="toggleFavorite(this)">
+      <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+      <div class="svg-container">
+        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+          </path>
+        </svg>
+        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+          </path>
+        </svg>
+        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="10,10 20,20"></polygon>
+          <polygon points="10,50 20,50"></polygon>
+          <polygon points="20,80 30,70"></polygon>
+          <polygon points="90,10 80,20"></polygon>
+          <polygon points="90,50 80,50"></polygon>
+          <polygon points="80,80 70,70"></polygon>
+        </svg>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="shop-item-details">
+    <span class="shop-item-title">
+  شحن جواهر فري فاير   
+    </span>
+  </div>
+  <span class="shop-item-tslem">
+    استلام فوري
+    <br>
+    <span id="price" style="color: red;"> السعر حسب الكمية </span>
+    <a href="fire.html" class="booton-shop-rectangle" target="_blank">اذهب للشراء</a>
+  </span>
+
+</div>
+  </div>
+</section>
+<div>
+       
+     <svg
+  class="waves"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 24 150 28"
+  preserveAspectRatio="none"
+  shape-rendering="auto"
+>
+  <defs>
+    <path
+      id="gentle-wave"
+      d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+    />
+  </defs>
+  <g class="parallax">
+    <use xlink:href="#gentle-wave" x="48" y="0" class="wave1" />
+    <use xlink:href="#gentle-wave" x="48" y="3" class="wave2" />
+    <use xlink:href="#gentle-wave" x="48" y="5" class="wave3" />
+    <use xlink:href="#gentle-wave" x="48" y="7" class="wave4" />
+  </g>
+</svg>
+        
+      </div>
+      <div class="back-to-top" id="backToTop"> 
+      
+        <i class="fas fa-arrow-up"></i>
+        <span>
+      العوده الى الاعلى
+      </span>
+        
+      </div>
+      
+      <div id="follow"
+         <span class="follow">
+          sd تابع متجر سينما 
+           
+         </span>
+      <div class="sociall">
+     
+        
+       <i class="fab fa-telegram social-icon" id="telegram"></i>
+       <i class="fab fa-instagram social-icon" id="instagram"></i>
+       <i class="fab fa-facebook social-icon" id="facebook"></i>
+      </div>
+      <hr>
+      <div class="footer-content">
+    
+         
+           <img class="tele-image-footer" src="https://www.raed.net/img?id=860410" alt="Alternative Text">
+         
+      
+      </div>
+      <div class="text-footer">
+        متجر سينما sd هوه خيارك المثيل لعالم الكلاوات 
+        <br class="fraq-text-footer">
+        قريبا سنتربع على عرش 
+      </div>
+ 
+    
+        <div id="views">عدد الزوار: <span id="visitorCount">0</span></div>
+      
+           
+    
+
+  
+
+    
+    
+<audio id="click-sound">
+  <source src="aa.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+function toggleNav() {
+  var nav = document.getElementById("nav");
+  nav.classList.toggle("active");
+
+  var on = document.getElementById("on");
+  var con = document.getElementById("con");
+
+  if (nav.classList.contains("active")) {
+    on.style.display = "none";
+    con.style.display = "block";
+  } else {
+    on.style.display = "block";
+    con.style.display = "none";
+  }
+}
+$(document).ready(function() {
+  // استمع للنقر على أي رابط داخل الـ navbar
+  $('.navbar a').on('click', function() {
+    // أغلق الـ navbar عن طريق إزالة الفئة "active"
+    $('#nav').removeClass('active');
+
+    // إعادة عرض رمز القائمة وإخفاء رمز الإغلاق
+    $('#on').show();
+    $('#con').hide();
+  });
+});
+// JavaScript لإضافة وإزالة الفئة active عند النقر
+$(document).ready(function() {
+  $('.navbar a').on('click', function() {
+    $('.navbar a').removeClass('active');
+    $(this).addClass('active');
+  });
+});
+
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const toggleSwitch = document.querySelector("#switch");
+
+    toggleSwitch.addEventListener("change", function() {
+      if (this.checked) {
+        // تفعيل الوضع النهاري
+        document.body.classList.add("day-mode");
+        document.body.classList.remove("night-mode");
+      } else {
+        // تفعيل الوضع الليلي
+        document.body.classList.add("night-mode");
+        document.body.classList.remove("day-mode");
+      }
+    });
+  });
+  document.getElementById('switch').addEventListener('change', function() {
+  var isDayMode = this.checked;
+  var magorLogo = document.querySelector('.magor-logo');
+  var teleImage = document.querySelector('.tele-image');
+  var telefooter = document.querySelector('.tele-image-footer');
+
+  if (isDayMode) {
+    magorLogo.src = 'assets/ii.jpeg'; // تعديل المسار إلى صورة النهار المناسبة
+    teleImage.src = 'https://www.raed.net/img?id=860411'; // تعديل المسار إلى صورة النهار المناسبة
+    telefooter.src = 'https://www.raed.net/img?id=860412';
+  } else {
+    magorLogo.src = 'assets/i.jpeg'; // تعديل المسار إلى صورة الليل المناسبة
+    teleImage.src = 'https://www.raed.net/img?id=860412'; // تعديل المسار إلى صورة الليل المناسبة
+    telefooter.src = 'https://www.raed.net/img?id=860410';
+  }
+});
+
+</script>
+<script>
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+document.querySelectorAll('.favorite-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const item = this.closest('.shop-item');
+        const imgSrc = item.querySelector('.shop-item-image').src;
+        const title = item.querySelector('.shop-item-title').textContent;
+        const price = item.querySelector('#price').textContent;
+        const link = item.querySelector('.booton-shop-rectangle').href;
+        const rectangle = item.querySelector('.top-right-rectangle').textContent;
+        const tslem = item.querySelector('.shop-item-tslem').innerHTML;
+
+        // إنشاء معرف فريد باستخدام جميع الخصائص
+        const uniqueId = title + price + imgSrc + rectangle + tslem;
+
+        const favorite = {
+            id: uniqueId,
+            imgSrc,
+            title,
+            price,
+            link,
+            rectangle,
+            tslem
+        };
+
+        const index = favorites.findIndex(fav => fav.id === uniqueId);
+        if (index === -1) {
+            favorites.push(favorite);
+            this.classList.add('active');
+        } else {
+            favorites.splice(index, 1);
+            this.classList.remove('active');
+        }
+
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        updateFavoriteButtons(); // تحديث حالة الأزرار على جميع الصفحات
+        showFavorites(); // تحديث العرض مباشرةً
+    });
+
+    const itemTitle = button.closest('.shop-item').querySelector('.shop-item-title').textContent;
+    const itemPrice = button.closest('.shop-item').querySelector('#price').textContent;
+    const itemImgSrc = button.closest('.shop-item').querySelector('.shop-item-image').src;
+    const itemRectangle = button.closest('.shop-item').querySelector('.top-right-rectangle').textContent;
+    const itemTslem = button.closest('.shop-item').querySelector('.shop-item-tslem').innerHTML;
+    const uniqueId = itemTitle + itemPrice + itemImgSrc + itemRectangle + itemTslem;
+
+    if (favorites.find(fav => fav.id === uniqueId)) {
+        button.classList.add('active');
+        button.querySelector('.checkbox').checked = true; // Set checkbox state
+    }
+});
+
+function showFavorites() {
+    const favoritesContainer = document.getElementById('favorites');
+    favoritesContainer.innerHTML = '';
+
+    if (favorites.length === 0) {
+        favoritesContainer.innerHTML = '<p>عذرا لم تقم باضافة شي</p>';
+    } else {
+        favorites.forEach(fav => {
+            const favItem = document.createElement('div');
+            favItem.classList.add('shop-item');
+
+            favItem.innerHTML = `
+                <div class="image-container">
+                    <img class="shop-item-image" src="${fav.imgSrc}" alt="Shop Item">
+                    <div class="top-right-rectangle">${fav.rectangle}</div>
+                    <button class="favorite-btn active"><i class="fas fa-heart"></i></button>
+                </div>
+                <div class="shop-item-details">
+                    <span class="shop-item-title">${fav.title}</span>
+                </div>
+                <span class="shop-item-tslem">
+                    ${fav.tslem}
+                </span>
+            `;
+
+            favItem.querySelector('.favorite-btn').addEventListener('click', function() {
+                const index = favorites.findIndex(f => f.id === fav.id);
+                if (index !== -1) {
+                    favorites.splice(index, 1);
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    updateFavoriteButtons(); // تحديث حالة الأزرار على جميع الصفحات
+                    showFavorites();
+                }
+            });
+
+            favoritesContainer.appendChild(favItem);
+        });
+    }
+}
+
+function toggleFavorite(button) {
+    button.classList.toggle('active'); // Toggle active class for styling
+    var isFavorite = button.classList.contains('active');
+    const checkbox = button.querySelector('.checkbox');
+    checkbox.checked = isFavorite; // Update checkbox state
+    const id = checkbox.id; // Get checkbox id
+
+    // Save checkbox state in localStorage
+    localStorage.setItem('favorite_' + id, isFavorite);
+
+    if (isFavorite) {
+        // Code to add item to favorites
+        playSound('add.mp3'); // Play sound effect for adding
+         // احذفها اذا اريد
+    } else {
+        // Code to remove item from favorites
+        playSound('delete.mp3');
+        vibrateDevice();
+    }
+}
+
+function playSound(soundFile) {
+    var audio = new Audio(soundFile);
+    audio.play();
+}
+
+function vibrateDevice() {
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]); // Vibrate for 200ms, pause for 100ms, then vibrate for 200ms
+    }
+}
+
+function updateFavoriteButtons() {
+    const allButtons = document.querySelectorAll('.favorite-btn');
+    allButtons.forEach(button => {
+        const itemTitle = button.closest('.shop-item').querySelector('.shop-item-title').textContent;
+        const itemPrice = button.closest('.shop-item').querySelector('#price').textContent;
+        const itemImgSrc = button.closest('.shop-item').querySelector('.shop-item-image').src;
+        const itemRectangle = button.closest('.shop-item').querySelector('.top-right-rectangle').textContent;
+        const itemTslem = button.closest('.shop-item').querySelector('.shop-item-tslem').innerHTML;
+        const uniqueId = itemTitle + itemPrice + itemImgSrc + itemRectangle + itemTslem;
+
+        const isFavorite = favorites.find(fav => fav.id === uniqueId);
+
+        if (isFavorite) {
+            button.classList.add('active');
+            button.querySelector('.checkbox').checked = true; // Set checkbox state
+        } else {
+            button.classList.remove('active');
+            button.querySelector('.checkbox').checked = false; // Reset checkbox state
+        }
+    });
+}
+
+// Restore favorite state from localStorage on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateFavoriteButtons(); // Initial call to update all favorite buttons
+    showFavorites(); // Initial call to show favorites if any
+});
+</script>
+<script>
+  window.addEventListener('pageshow', function(event) {
+    var historyTraversal = event.persisted ||
+      (typeof window.performance != 'undefined' &&
+        window.performance.navigation.type === 2);
+    if (historyTraversal) {
+      // هنا يمكنك وضع رمز تحديث الصفحة بعد الرجوع
+      location.reload();
+    }
+  });
+</script>
+<script>
+  document.getElementById('telegram').addEventListener('click', function() {
+    this.style.color = '#0088cc'; // لون شعار تليجرام
+    setTimeout(() => {
+      window.location.href = 'https://telegram.org';
+    }, 500);
+  });
+
+  document.getElementById('instagram').addEventListener('click', function() {
+    this.style.color = '#C13584'; // لون شعار انستجرام
+    setTimeout(() => {
+      window.location.href = 'https://instagram.com';
+    }, 500);
+  });
+
+  document.getElementById('facebook').addEventListener('click', function() {
+    this.style.color = '#1877f2'; // لون شعار فيسبوك
+    setTimeout(() => {
+      window.location.href = 'https://facebook.com';
+    }, 500);
+  });
+</script>
+<script>
+  document.getElementById('backToTop').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+<script type="module">
+    // استيراد الدوال اللازمة من Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, get, set, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+ 
+    // تكوين Firebase لمشروعك
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw9L9VsshAxgIywHTAM5maQNiTse9_YEw",
+      authDomain: "cinema-sd-53883.firebaseapp.com",
+      projectId: "cinema-sd-53883",
+      storageBucket: "cinema-sd-53883.appspot.com",
+      messagingSenderId: "10513286632",
+      appId: "1:10513286632:web:0a67753db1c44239aa505d",
+      measurementId: "G-WY3WQ50EHN",
+      databaseURL: "https://cinema-sd-53883-default-rtdb.firebaseio.com/"
+    };
+ 
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+ 
+    // دالة لتحديث عداد الزوار
+    async function updateVisitorCount() {
+      // التحقق من ما إذا كان المستخدم قد زار الموقع سابقاً
+      if (!localStorage.getItem('visited')) {
+        // مرجع إلى عداد الزوار في قاعدة البيانات
+        const visitorRef = ref(database, 'visitorCount');
+ 
+        // تشغيل معاملة لزيادة العدد
+        await runTransaction(visitorRef, (currentCount) => {
+          return (currentCount || 0) + 1;
+        });
+ 
+        // تعيين علامة الزيارة في التخزين المحلي
+        localStorage.setItem('visited', 'true');
+      }
+ 
+      // استرجاع وعرض عداد الزوار
+      const visitorRef = ref(database, 'visitorCount');
+      onValue(visitorRef, (snapshot) => {
+        const count = snapshot.val();
+        animateCount(count);
+      });
+    }
+ 
+    // دالة لزيادة العدد بشكل تدريجي حتى الوصول للعدد الفعلي
+    function animateCount(finalCount) {
+      const displayElement = document.getElementById('visitorCount');
+      let currentCount = 0;
+      const increment = Math.ceil(finalCount / 100); // تعيين الزيادة لكل خطوة
+ 
+      const interval = setInterval(() => {
+        currentCount += increment;
+        if (currentCount >= finalCount) {
+          currentCount = finalCount;
+          clearInterval(interval);
+        }
+        displayElement.innerText = currentCount;
+      }, 50); // تعيين مدة الخطوة
+    }
+ 
+    // استدعاء الدالة لتحديث وعرض عداد الزوار
+    updateVisitorCount();
+  </script>
+  
+</body>
+</html>
